@@ -154,11 +154,7 @@ public abstract class Command {
             return true;
         }
 
-        if (this.permissionMessage == null) {
-            target.sendMessage(new TranslationContainer(TextFormat.RED + "%commands.generic.unknown", this.name));
-        } else if (!this.permissionMessage.equals("")) {
-            target.sendMessage(this.permissionMessage.replace("<permission>", this.permission));
-        }
+        target.sendMessage(TextFormat.colorize("&c&l» Oeps! &r&cJe hebt onvoldoende rechten om dit commando te gebruiken."));
 
         return false;
     }
