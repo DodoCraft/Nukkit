@@ -775,43 +775,6 @@ public class Server {
         return consoleSender;
     }
 
-    public void reload() {
-        log.info("Reloading...");
-
-        log.info("Saving levels...");
-
-        for (Level level : this.levelArray) {
-            level.save();
-        }
-
-        this.pluginManager.disablePlugins();
-        this.pluginManager.clearPlugins();
-        this.commandMap.clearCommands();
-
-        log.info("Reloading properties...");
-        this.properties.reload();
-        this.maxPlayers = this.getPropertyInt("max-players", 20);
-
-        if (this.getPropertyBoolean("hardcore", false) && this.getDifficulty() < 3) {
-            this.setPropertyInt("difficulty", difficulty = 3);
-        }
-
-        this.banByIP.load();
-        this.banByName.load();
-        this.reloadWhitelist();
-        this.operators.reload();
-
-        for (BanEntry entry : this.getIPBans().getEntires().values()) {
-            this.getNetwork().blockAddress(entry.getName(), -1);
-        }
-
-        this.pluginManager.registerInterface(JavaPluginLoader.class);
-        this.pluginManager.loadPlugins(this.pluginPath);
-        this.enablePlugins(PluginLoadOrder.STARTUP);
-        this.enablePlugins(PluginLoadOrder.POSTWORLD);
-        Timings.reset();
-    }
-
     public void shutdown() {
         isRunning.compareAndSet(true, false);
     }
@@ -1293,6 +1256,7 @@ public class Server {
 
     public void setMaxPlayers(int maxPlayers) {
         this.maxPlayers = maxPlayers;
+        this.properties.set("max-players", maxPlayers);
     }
 
     public int getPort() {
