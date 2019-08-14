@@ -36,6 +36,7 @@ public class ItemMap extends Item {
             tag.putLong("map_uuid", mapCount++);
             this.setNamedTag(tag);
         }
+        maxStackSize = 1;
     }
 
     public void setImage(File file) throws IOException {
@@ -96,10 +97,5 @@ public class ItemMap extends Item {
     @Override
     public boolean canBeActivated() {
         return true;
-    }
-
-    @Override
-    public int getMaxStackSize() {
-        return 1;
     }
 }

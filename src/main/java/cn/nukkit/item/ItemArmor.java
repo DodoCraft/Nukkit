@@ -21,23 +21,22 @@ abstract public class ItemArmor extends Item implements ItemDurable {
 
     public ItemArmor(int id) {
         super(id);
+        maxStackSize = 1;
     }
 
     public ItemArmor(int id, Integer meta) {
         super(id, meta);
+        maxStackSize = 1;
     }
 
     public ItemArmor(int id, Integer meta, int count) {
         super(id, meta, count);
+        maxStackSize = 1;
     }
 
     public ItemArmor(int id, Integer meta, int count, String name) {
         super(id, meta, count, name);
-    }
-
-    @Override
-    public int getMaxStackSize() {
-        return 1;
+        maxStackSize = 1;
     }
 
     @Override

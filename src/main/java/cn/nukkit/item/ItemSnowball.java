@@ -16,11 +16,7 @@ public class ItemSnowball extends ProjectileItem {
 
     public ItemSnowball(Integer meta, int count) {
         super(SNOWBALL, 0, count, "Snowball");
-    }
-
-    @Override
-    public int getMaxStackSize() {
-        return 16;
+        maxStackSize = 16;
     }
 
     @Override

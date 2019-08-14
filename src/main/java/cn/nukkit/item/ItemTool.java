@@ -51,11 +51,7 @@ public abstract class ItemTool extends Item implements ItemDurable {
 
     public ItemTool(int id, Integer meta, int count, String name) {
         super(id, meta, count, name);
-    }
-
-    @Override
-    public int getMaxStackSize() {
-        return 1;
+        maxStackSize = 1;
     }
 
     @Override

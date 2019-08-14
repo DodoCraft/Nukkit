@@ -71,7 +71,7 @@ public class ItemBucket extends Item {
 
     @Override
     public int getMaxStackSize() {
-        return this.meta == 0 ? 16 : 1;
+        return maxStackSizeChanged ? maxStackSize : (this.meta == 0 ? 16 : 1);
     }
 
     @Override

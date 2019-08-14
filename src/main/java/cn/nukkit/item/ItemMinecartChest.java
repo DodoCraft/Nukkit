@@ -24,6 +24,7 @@ public class ItemMinecartChest extends Item {
 
     public ItemMinecartChest(Integer meta, int count) {
         super(MINECART_WITH_CHEST, meta, count, "Minecart with Chest");
+        maxStackSize = 1;
     }
 
     @Override
@@ -58,10 +59,5 @@ public class ItemMinecartChest extends Item {
             return true;
         }
         return false;
-    }
-
-    @Override
-    public int getMaxStackSize() {
-        return 1;
     }
 }

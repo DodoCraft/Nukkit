@@ -16,6 +16,7 @@ public class ItemEgg extends ProjectileItem {
 
     public ItemEgg(Integer meta, int count) {
         super(EGG, meta, count, "Egg");
+        maxStackSize = 16;
     }
 
     @Override
@@ -27,7 +28,4 @@ public class ItemEgg extends ProjectileItem {
     public float getThrowForce() {
         return 1.5f;
     }
-
-    @Override
-    public int getMaxStackSize() { return 16; }
 }

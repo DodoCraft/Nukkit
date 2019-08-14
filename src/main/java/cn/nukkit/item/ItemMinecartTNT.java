@@ -24,6 +24,7 @@ public class ItemMinecartTNT extends Item {
 
     public ItemMinecartTNT(Integer meta, int count) {
         super(MINECART_WITH_TNT, meta, count, "Minecart with TNT");
+        maxStackSize = 1;
     }
 
     @Override
@@ -58,10 +59,5 @@ public class ItemMinecartTNT extends Item {
             return true;
         }
         return false;
-    }
-
-    @Override
-    public int getMaxStackSize() {
-        return 1;
     }
 }

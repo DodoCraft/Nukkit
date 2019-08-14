@@ -19,15 +19,11 @@ public class ItemFishingRod extends ItemTool {
 
     public ItemFishingRod(Integer meta, int count) {
         super(FISHING_ROD, meta, count, "Fishing Rod");
+        maxStackSize = 1;
     }
 
     @Override
     public int getEnchantAbility() {
-        return 1;
-    }
-
-    @Override
-    public int getMaxStackSize() {
         return 1;
     }
 
