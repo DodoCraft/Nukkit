@@ -993,10 +993,8 @@ public abstract class Entity extends Location implements Metadatable {
         if (source.isCancelled()) {
             return false;
         }
-        if (this.absorption > 0) {  //Damage Absorption
-            float absorptionHealth = this.absorption - source.getFinalDamage() > 0 ? source.getFinalDamage() : this.absorption;
-            this.setAbsorption(this.absorption - absorptionHealth);
-            source.setDamage(-absorptionHealth, EntityDamageEvent.DamageModifier.ABSORPTION);
+        if (this.absorption > 0) {  // Damage Absorption
+            this.setAbsorption(Math.max(0, this.getAbsorption() + source.getDamage(EntityDamageEvent.DamageModifier.ABSORPTION)));
         }
         setLastDamageCause(source);
         setHealth(getHealth() - source.getFinalDamage());
@@ -1636,6 +1634,10 @@ public abstract class Entity extends Location implements Metadatable {
         }
     }
 
+    public boolean onInteract(Player player, Item item, Vector3 clickedPos) {
+        return onInteract(player, item);
+    }
+
     public boolean onInteract(Player player, Item item) {
         return false;
     }
@@ -2067,7 +2069,7 @@ public abstract class Entity extends Location implements Metadatable {
         this.health = 0;
         this.scheduleUpdate();
 
-        for (Entity passenger : this.passengers) {
+        for (Entity passenger : new ArrayList<>(this.passengers)) {
             dismountEntity(passenger);
         }
     }
