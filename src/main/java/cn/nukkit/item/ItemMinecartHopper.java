@@ -24,6 +24,7 @@ public class ItemMinecartHopper extends Item {
 
     public ItemMinecartHopper(Integer meta, int count) {
         super(MINECART_WITH_HOPPER, meta, count, "Minecart with Hopper");
+        maxStackSize = 1;
     }
 
     @Override
@@ -58,10 +59,5 @@ public class ItemMinecartHopper extends Item {
             return true;
         }
         return false;
-    }
-
-    @Override
-    public int getMaxStackSize() {
-        return 1;
     }
 }

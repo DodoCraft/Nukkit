@@ -20,10 +20,6 @@ public class ItemBed extends Item {
     public ItemBed(Integer meta, int count) {
         super(BED, meta, count, DyeColor.getByWoolData(meta).getName() + " Bed");
         this.block = new BlockBed();
-    }
-
-    @Override
-    public int getMaxStackSize() {
-        return 1;
+        maxStackSize = 1;
     }
 }

@@ -26,6 +26,7 @@ public class ItemBoat extends Item {
 
     public ItemBoat(Integer meta, int count) {
         super(BOAT, meta, count, "Boat");
+        maxStackSize = 1;
     }
 
     @Override
@@ -60,10 +61,5 @@ public class ItemBoat extends Item {
 
         boat.spawnToAll();
         return true;
-    }
-
-    @Override
-    public int getMaxStackSize() {
-        return 1;
     }
 }

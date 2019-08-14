@@ -42,6 +42,8 @@ public class Item implements Cloneable, BlockID, ItemID {
     protected boolean hasMeta = true;
     private byte[] tags = new byte[0];
     private CompoundTag cachedNBT = null;
+    protected boolean maxStackSizeChanged = false;
+    protected int maxStackSize = 64;
     public int count;
     protected int durability = 0;
     protected String name;
@@ -852,7 +854,12 @@ public class Item implements Cloneable, BlockID, ItemID {
     }
 
     public int getMaxStackSize() {
-        return 64;
+        return maxStackSize;
+    }
+
+    public void setMaxStackSize(int maxStackSize) {
+        this.maxStackSize = maxStackSize;
+        this.maxStackSizeChanged = true;
     }
 
     final public Short getFuelTime() {

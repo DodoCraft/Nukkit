@@ -16,10 +16,6 @@ public class ItemMushroomStew extends Item {
 
     public ItemMushroomStew(Integer meta, int count) {
         super(MUSHROOM_STEW, 0, count, "Mushroom Stew");
-    }
-
-    @Override
-    public int getMaxStackSize() {
-        return 1;
+        maxStackSize = 1;
     }
 }

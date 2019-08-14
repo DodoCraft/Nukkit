@@ -14,11 +14,7 @@ public class ItemPotionSplash extends ProjectileItem {
 
     public ItemPotionSplash(Integer meta, int count) {
         super(SPLASH_POTION, meta, count, "Splash Potion");
-    }
-
-    @Override
-    public int getMaxStackSize() {
-        return 1;
+        maxStackSize = 1;
     }
 
     @Override

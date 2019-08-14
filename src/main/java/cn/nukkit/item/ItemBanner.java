@@ -20,11 +20,7 @@ public class ItemBanner extends Item {
     public ItemBanner(Integer meta, int count) {
         super(BANNER, meta, count, "Banner");
         this.block = Block.get(Block.STANDING_BANNER);
-    }
-
-    @Override
-    public int getMaxStackSize() {
-        return 16;
+        maxStackSize = 16;
     }
 
     public int getBaseColor() {

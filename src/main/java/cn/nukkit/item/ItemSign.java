@@ -19,10 +19,6 @@ public class ItemSign extends Item {
     public ItemSign(Integer meta, int count) {
         super(SIGN, 0, count, "Sign");
         this.block = new BlockSignPost();
-    }
-
-    @Override
-    public int getMaxStackSize() {
-        return 16;
+        maxStackSize = 16;
     }
 }

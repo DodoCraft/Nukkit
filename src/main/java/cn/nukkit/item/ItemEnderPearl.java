@@ -12,11 +12,7 @@ public class ItemEnderPearl extends ProjectileItem {
 
     public ItemEnderPearl(Integer meta, int count) {
         super(ENDER_PEARL, 0, count, "Ender Pearl");
-    }
-
-    @Override
-    public int getMaxStackSize() {
-        return 16;
+        maxStackSize = 16;
     }
 
     @Override

@@ -19,10 +19,6 @@ public class ItemCake extends Item {
     public ItemCake(Integer meta, int count) {
         super(CAKE, 0, count, "Cake");
         this.block = new BlockCake();
-    }
-
-    @Override
-    public int getMaxStackSize() {
-        return 1;
+        maxStackSize = 1;
     }
 }
