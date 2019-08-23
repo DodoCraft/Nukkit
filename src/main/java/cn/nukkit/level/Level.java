@@ -2,9 +2,7 @@ package cn.nukkit.level;
 
 import cn.nukkit.Player;
 import cn.nukkit.Server;
-import cn.nukkit.block.Block;
-import cn.nukkit.block.BlockAir;
-import cn.nukkit.block.BlockRedstoneDiode;
+import cn.nukkit.block.*;
 import cn.nukkit.blockentity.BlockEntity;
 import cn.nukkit.entity.Entity;
 import cn.nukkit.entity.item.EntityItem;
@@ -17,6 +15,7 @@ import cn.nukkit.event.block.BlockUpdateEvent;
 import cn.nukkit.event.level.*;
 import cn.nukkit.event.player.PlayerInteractEvent;
 import cn.nukkit.event.player.PlayerInteractEvent.Action;
+import cn.nukkit.event.player.PlayerSafeSpawnEvent;
 import cn.nukkit.event.weather.LightningStrikeEvent;
 import cn.nukkit.item.Item;
 import cn.nukkit.item.ItemBlock;
@@ -1320,7 +1319,7 @@ public class Level implements ChunkManager, Metadatable {
     public boolean isFullBlock(Vector3 pos) {
         AxisAlignedBB bb;
         if (pos instanceof Block) {
-            if (((Block) pos).isSolid()) {
+            if (((Block) pos).isSolid() && !(pos instanceof BlockStairs) && !(pos instanceof BlockSlab)) {
                 return true;
             }
             bb = ((Block) pos).getBoundingBox();
@@ -2808,6 +2807,18 @@ public class Level implements ChunkManager, Metadatable {
     }
 
     public Position getSafeSpawn(Vector3 spawn) {
+        Position safeSpawnPosition = getSafeSpawnInner(spawn);
+        if (safeSpawnPosition != null) {
+            PlayerSafeSpawnEvent event = new PlayerSafeSpawnEvent(
+                    null, safeSpawnPosition, safeSpawnPosition, new Position(spawn.x, spawn.y, spawn.z)
+            );
+            this.server.getPluginManager().callEvent(event);
+            return event.getSpawnLocation() != null ? event.getSafeSpawn() : event.getOriginalSpawn();
+        }
+        return spawn != null ? new Position(spawn.x, spawn.y, spawn.z) : getSpawnLocation();
+    }
+
+    private Position getSafeSpawnInner(Vector3 spawn) {
         if (spawn == null || spawn.y < 1) {
             spawn = this.getSpawnLocation();
         }
