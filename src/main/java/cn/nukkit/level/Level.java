@@ -15,7 +15,6 @@ import cn.nukkit.event.block.BlockUpdateEvent;
 import cn.nukkit.event.level.*;
 import cn.nukkit.event.player.PlayerInteractEvent;
 import cn.nukkit.event.player.PlayerInteractEvent.Action;
-import cn.nukkit.event.player.PlayerSafeSpawnEvent;
 import cn.nukkit.event.weather.LightningStrikeEvent;
 import cn.nukkit.item.Item;
 import cn.nukkit.item.ItemBlock;
@@ -64,6 +63,8 @@ import it.unimi.dsi.fastutil.objects.ObjectIterator;
 import java.io.File;
 import java.io.IOException;
 import java.lang.ref.SoftReference;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Method;
 import java.util.*;
 import java.util.concurrent.*;
 
@@ -2806,15 +2807,51 @@ public class Level implements ChunkManager, Metadatable {
         return this.getSafeSpawn(null);
     }
 
-    public Position getSafeSpawn(Vector3 spawn) {
-        Position safeSpawnPosition = getSafeSpawnInner(spawn);
-        if (safeSpawnPosition != null) {
-            PlayerSafeSpawnEvent event = new PlayerSafeSpawnEvent(
-                    null, safeSpawnPosition, safeSpawnPosition, new Position(spawn.x, spawn.y, spawn.z)
-            );
-            this.server.getPluginManager().callEvent(event);
-            return event.getSpawnLocation() != null ? event.getSafeSpawn() : event.getOriginalSpawn();
+    private static final Constructor<?> SAFE_SPAWN_EVENT_CONSTRUCTOR;
+    private static final Method SAFE_SPAWN_EVENT_FINAL_LOCATION;
+
+    static {
+        Class<?> safeSpawnEventClass = null;
+        try {
+            safeSpawnEventClass = Class.forName("nl.dodocraft.utils.server.event.SafeSpawnEvent");
+        } catch (Exception ignored) {
+            // No DodoUtils :shrug:
         }
+
+        Constructor<?> constructor = null;
+        Method finalLocation = null;
+        if (safeSpawnEventClass != null) {
+            try {
+                constructor = safeSpawnEventClass.getConstructor(Level.class, Position.class, Position.class, Position.class);
+                finalLocation = safeSpawnEventClass.getDeclaredMethod("getFinalLocation");
+            } catch (NoSuchMethodException e) {
+                e.printStackTrace();
+            }
+        }
+        SAFE_SPAWN_EVENT_CONSTRUCTOR = constructor;
+        SAFE_SPAWN_EVENT_FINAL_LOCATION = finalLocation;
+    }
+
+    public Position getSafeSpawn(Vector3 spawn) {
+        if (spawn == null) spawn = getSpawnLocation();
+        Position safeSpawnPosition = getSafeSpawnInner(spawn);
+
+        if (safeSpawnPosition != null) {
+            if (SAFE_SPAWN_EVENT_CONSTRUCTOR != null) {
+                try {
+                    LevelEvent event = (LevelEvent) SAFE_SPAWN_EVENT_CONSTRUCTOR.newInstance(
+                            this, safeSpawnPosition, safeSpawnPosition,
+                            spawn != null ? new Position(spawn.x, spawn.y, spawn.z) : null
+                    );
+                    this.server.getPluginManager().callEvent(event);
+                    return (Position) SAFE_SPAWN_EVENT_FINAL_LOCATION.invoke(event);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+            return safeSpawnPosition;
+        }
+        // safeSpawn is null so...
         return spawn != null ? new Position(spawn.x, spawn.y, spawn.z) : getSpawnLocation();
     }
 
